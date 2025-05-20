@@ -2,14 +2,15 @@
 
 ## Overview
 Our paper is avaiable at [Arixv](https://www.arxiv.org/abs/2502.01681) and [OpenReview](https://openreview.net/forum?id=b10lRabU9W).
+![Overall Pipeline](./Overall_pipline.png)
 
 ## Dataset Preparation
 We provide sample raw data and corresponding processed data in `./raw_data` and `./raw_sample_data` respectively.
 
 **To prepare your own data:**
-    1. `cd ./simulator` and `bash ./build.sh`
-    2. prepare your own raw aig data in `./YOUR_RAW_DATA`
-    3. `python ./src/dg_dataset/data_preparation.py --aig_dir ./YOUR_RAW_DATA --save_path ./YOUR_DATASET_DIR`
+* 1. `cd ./simulator` and `bash ./build.sh`
+* 2. prepare your own raw aig data in `./YOUR_RAW_DATA`
+* 3. `python ./src/dg_dataset/data_preparation.py --aig_dir ./YOUR_RAW_DATA --save_path ./YOUR_DATASET_DIR`
     
 ## Training 
 You can run experiment with `./run/train_large.sh` and `./run/train_large_baseline.sh`
