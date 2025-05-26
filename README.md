@@ -19,5 +19,5 @@ You can run experiment with `./run/train_large.sh` and `./run/train_large_baseli
 
 We further offer various baseline models:
 * `./run/train_large.sh` offers models with **baseline**(DeepGate2), **plain**(DeepGate3), **sparse**(DeepGate4), **GraphGPS**, **Exphormer** and **DAGformer**
-* * `./run/train_large_baseline.sh` offers models with **PolarGate**, **DeepGate2**, **GraphGPS**, **Exphormer**, **DAGformer**, **GCN**, **GraphSAGE**, **GAT** and **PNA**
+* `./run/train_large_baseline.sh` offers models with **PolarGate**, **DeepGate2**, **GraphGPS**, **Exphormer**, **DAGformer**, **GCN**, **GraphSAGE**, **GAT** and **PNA**
 
