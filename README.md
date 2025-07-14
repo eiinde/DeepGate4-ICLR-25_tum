@@ -4,6 +4,9 @@
 Our paper is avaiable at [Arixv](https://www.arxiv.org/abs/2502.01681) and [OpenReview](https://openreview.net/forum?id=b10lRabU9W).
 ![Overall Pipeline](./Overall_pipline.png)
 
+## Environment
+To install the library `deepgate`, please refer to [python-deepgate](https://github.com/zshi0616/python-deepgate).
+
 ## Dataset Preparation
 We provide sample raw data and corresponding processed data in `./raw_data` and `./raw_sample_data` respectively.
 
