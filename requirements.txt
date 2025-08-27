@@ -99,7 +99,7 @@ pure-eval==0.2.2
 py-aiger==6.2.1
 pyasn1==0.5.1
 pyasn1-modules==0.3.0
-pyg-lib==0.3.1
+pyg-lib
 Pygments==2.17.2
 pynauty==2.8.6
 pyparsing==3.0.9
