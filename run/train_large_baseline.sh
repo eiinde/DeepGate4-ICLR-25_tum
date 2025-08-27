@@ -8,7 +8,7 @@ MODEL=baseline
 ENCODERS=(PolarGate DeepGate2 GraphGPS Exphormer DAGformer GCN GraphSAGE GAT PNA) 
 ENCODER=DeepGate2
 
-python -u ./src/main.py \
+python3 -u ./src/main.py \
  --exp_id ${DATE}_${MODEL}_${MODE}_${ENCODER} \
  --data_dir ./inmemory/${DATA} \
  --pkl_path ./${DATA} \
