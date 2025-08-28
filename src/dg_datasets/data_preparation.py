@@ -12,12 +12,16 @@ import argparse
 import torch.nn.functional as F
 import sys
 sys.path.append('./src')
-from utils import aiger_utils
+# from utils import aiger_utils
 from utils import circuit_utils
+from utils import netlist_utils
 
 from collections import defaultdict
 
-gate_to_index={'PI': 0, 'AND': 1, 'NOT': 2, 'DFF': 3}
+gate_to_index = {
+    "PI": 0, "AND": 1, "OR": 2, "NAND": 3, "NOR": 4,
+    "XOR": 5, "XNOR": 6, "INV": 7, "BUF": 8, "DFF": 9
+}
 NODE_CONNECT_SAMPLE_RATIO = 0.1
 NO_NODE_PATH = 10
 NO_NODE_HOP = 10
@@ -36,7 +40,7 @@ def get_parse_args():
     parser.add_argument('--end', default=100000, type=int)
     
     # Input
-    parser.add_argument('--aig_dir', default='./raw_sample_data', type=str)
+    parser.add_argument('--netlist_dir', default='./raw_sample_data', type=str)
     
     # Output
     parser.add_argument('--save_path', default='./sample_data', type=str)
@@ -379,34 +383,34 @@ def generate_orthogonal_vectors(n, dim):
 if __name__ == '__main__':     
     args = get_parse_args()
     
-    aig_namelist_path = os.path.join(args.aig_dir, 'aig_namelist.txt')
-    if not os.path.exists(aig_namelist_path):
-        aig_files = glob.glob('{}/*.aig'.format(args.aig_dir))
-        aig_namelist = []
-        for aig_file in aig_files:
-            aig_name = os.path.basename(aig_file).replace('.aig', '')
-            aig_namelist.append(aig_name)
-        with open(aig_namelist_path, 'w') as f:
-            for aig_name in aig_namelist:
-                f.write(aig_name + '\n')
+    netlist_namelist_path = os.path.join(args.netlist_dir, 'netlist_namelist.txt')
+    if not os.path.exists(netlist_namelist_path):
+        netlist_files = glob.glob('{}/*.netlist'.format(args.netlist_dir))
+        netlist_namelist = []
+        for netlist_file in netlist_files:
+            netlist_name = os.path.basename(netlist_file).replace('.netlist', '')
+            netlist_namelist.append(netlist_name)
+        with open(netlist_namelist_path, 'w') as f:
+            for netlist_name in netlist_namelist:
+                f.write(netlist_name + '\n')
     else:
-        with open(aig_namelist_path, 'r') as f:
-            aig_namelist = f.readlines()
-            aig_namelist = [x.strip() for x in aig_namelist]
+        with open(netlist_namelist_path, 'r') as f:
+            netlist_namelist = f.readlines()
+            netlist_namelist = [x.strip() for x in netlist_namelist]
     
-    aig_namelist = aig_namelist[args.start: args.end]
-    no_circuits = len(aig_namelist)
+    netlist_namelist = netlist_namelist[args.start: args.end]
+    no_circuits = len(netlist_namelist)
     tot_time = 0
     graphs = {}
 
-    for aig_idx, cir_name in enumerate(aig_namelist):
-        aig_file = os.path.join(args.aig_dir, cir_name + '.aig')
+    for netlist_idx, cir_name in enumerate(netlist_namelist):
+        netlist_file = os.path.join(args.netlist_dir, cir_name + '.netlist')
         start_time = time.time()
 
-        x_data, edge_index = aiger_utils.aig_to_xdata(aig_file)
+        x_data, edge_index = netlist_utils.netlist_to_xdata(netlist_file)
         print('Parse: {} ({:} / {:}), Size: {:}, Time: {:.2f}s, ETA: {:.2f}s, Succ: {:}'.format(
-            cir_name, aig_idx, no_circuits, len(x_data), 
-            tot_time, tot_time / ((aig_idx + 1) / no_circuits) - tot_time, 
+            cir_name, netlist_idx, no_circuits, len(x_data),
+            tot_time, tot_time / ((netlist_idx + 1) / no_circuits) - tot_time,
             len(graphs)
         ))
         fanin_list, fanout_list = circuit_utils.get_fanin_fanout(x_data, edge_index)
@@ -429,7 +433,7 @@ if __name__ == '__main__':
         x_data, edge_index = circuit_utils.remove_unconnected(x_data, edge_index)
         if len(edge_index) == 0 or len(x_data) < NO_NODES[0] or len(x_data) > NO_NODES[1]:
             continue
-        x_one_hot = dg.construct_node_feature(x_data, 3)
+        x_one_hot = dg.construct_node_feature(x_data, 9)
         edge_index = torch.tensor(edge_index, dtype=torch.long).t().contiguous()
         forward_level, forward_index, backward_level, backward_index = dg.return_order_info(edge_index, x_one_hot.size(0))
         
