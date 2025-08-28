@@ -7,7 +7,7 @@ MODE=${DATA}
 MODELs=(baseline sparse plain GraphGPS Exphormer DAGformer)
 MODEL=DAGformer
 
-python -u ./src/main.py \
+python3 -u ./src/main.py \
  --exp_id ${DATE}_${MODEL}_${MODE} \
  --data_dir ./inmemory/${DATA} \
  --pkl_path ./${DATA} \
