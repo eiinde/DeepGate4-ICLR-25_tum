@@ -407,7 +407,7 @@ if __name__ == '__main__':
         netlist_file = os.path.join(args.netlist_dir, cir_name + '.netlist')
         start_time = time.time()
 
-        x_data, edge_index = netlist_utils.netlist_to_xdata(netlist_file)
+        x_data, edge_index = netlist_utils.netlist_to_xdata(netlist_file,gate_to_index)
         print('Parse: {} ({:} / {:}), Size: {:}, Time: {:.2f}s, ETA: {:.2f}s, Succ: {:}'.format(
             cir_name, netlist_idx, no_circuits, len(x_data),
             tot_time, tot_time / ((netlist_idx + 1) / no_circuits) - tot_time,
