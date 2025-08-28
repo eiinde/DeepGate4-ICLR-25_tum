@@ -385,10 +385,10 @@ if __name__ == '__main__':
     
     netlist_namelist_path = os.path.join(args.netlist_dir, 'netlist_namelist.txt')
     if not os.path.exists(netlist_namelist_path):
-        netlist_files = glob.glob('{}/*.netlist'.format(args.netlist_dir))
+        netlist_files = glob.glob('{}/*.v'.format(args.netlist_dir))
         netlist_namelist = []
         for netlist_file in netlist_files:
-            netlist_name = os.path.basename(netlist_file).replace('.netlist', '')
+            netlist_name = os.path.basename(netlist_file).replace('.v', '')
             netlist_namelist.append(netlist_name)
         with open(netlist_namelist_path, 'w') as f:
             for netlist_name in netlist_namelist:
